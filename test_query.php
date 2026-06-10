@@ -46,11 +46,14 @@ if ($res) {
 }
 echo "\n";
 
-// Test 2: Check tblsessions
-echo "Testing query on tblsessions:\n";
-$res = $mysqli->query("SELECT * FROM tblsessions LIMIT 1");
+// Test 2: Check tblstaff
+echo "Testing query on tblstaff:\n";
+$res = $mysqli->query("SELECT staffid, email, active FROM tblstaff");
 if ($res) {
-    echo "Query succeeded!\n";
+    echo "Query succeeded! Retrieved staff:\n";
+    while ($row = $res->fetch_assoc()) {
+        echo " - ID: " . $row['staffid'] . " | Email: " . $row['email'] . " | Active: " . $row['active'] . "\n";
+    }
 } else {
     echo "Query failed: " . $mysqli->error . " (Code: " . $mysqli->errno . ")\n";
 }
