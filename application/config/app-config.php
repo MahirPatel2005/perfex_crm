@@ -90,4 +90,4 @@ define('APP_CSRF_PROTECTION', true);
 /**
  * Database Encryption / SSL
  */
-define('APP_DB_ENCRYPT', getenv('DB_SSL') === 'false' ? false : true);
+define('APP_DB_ENCRYPT', getenv('DB_SSL') === 'false' ? false : ['ssl_verify' => false]);
