@@ -94,7 +94,7 @@ define('APP_CSRF_PROTECTION', true);
  * Database Encryption / SSL
  */
 define('APP_DB_ENCRYPT', getenv('DB_SSL') === 'false' ? false : [
-    'ssl_ca' => '/etc/ssl/certs/ca-certificates.crt',
+    'ssl_ca' => FCPATH . 'ca.pem',
     'ssl_verify' => false
 ]);
 
