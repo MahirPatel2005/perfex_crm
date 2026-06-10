@@ -16,6 +16,9 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mod_rewrite (required for CodeIgniter routes)
 RUN a2enmod rewrite
 
+# Enable .htaccess AllowOverride All
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+
 # Set Apache root folder settings
 RUN sed -ri -e 's!/var/www/html!/var/www/html!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!/var/www/!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
