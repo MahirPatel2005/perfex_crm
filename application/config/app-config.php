@@ -91,3 +91,8 @@ define('APP_CSRF_PROTECTION', true);
  * Database Encryption / SSL
  */
 define('APP_DB_ENCRYPT', getenv('DB_SSL') === 'false' ? false : ['ssl_verify' => false]);
+
+/**
+ * Log Threshold Configuration
+ */
+define('APP_LOG_THRESHOLD', getenv('APP_LOG_THRESHOLD') ? intval(getenv('APP_LOG_THRESHOLD')) : 4);
