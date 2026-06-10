@@ -55,6 +55,9 @@ define('APP_DB_PASSWORD', getenv('DB_PASSWORD') ?: 'M@hir2005');
  */
 define('APP_DB_NAME', getenv('DB_NAME') ?: 'perfex_crm');
 
+// Log resolved config details for debugging (safe, prints password length instead of raw value)
+error_log("DB Config: Host=" . APP_DB_HOSTNAME . ", User=" . APP_DB_USERNAME . ", DB=" . APP_DB_NAME . ", PwdLength=" . strlen(APP_DB_PASSWORD));
+
 /**
  * @since  2.3.0
  * Database charset
