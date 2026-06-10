@@ -106,4 +106,25 @@ if ($mysqli) {
         echo "FAILED: " . mysqli_connect_error() . " (Code: " . mysqli_connect_errno() . ")\n";
     }
 }
+echo "\n";
+
+// Test 5: Connection with Aiven CA certificate (ca.pem)
+echo "Test 5: Connecting WITH SSL using Aiven ca.pem...\n";
+$mysqli = mysqli_init();
+if (!$mysqli) {
+    echo "mysqli_init failed\n";
+} else {
+    $mysqli->options(MYSQLI_OPT_CONNECT_TIMEOUT, 5);
+    $ca_path = dirname(__FILE__) . '/ca.pem';
+    echo "Aiven ca.pem path exists? " . (file_exists($ca_path) ? 'YES' : 'NO') . "\n";
+    
+    $client_flags = MYSQLI_CLIENT_SSL;
+    $mysqli->ssl_set(NULL, NULL, $ca_path, NULL, NULL);
+    if (@$mysqli->real_connect($clean_host, $user, $pass, $name, $port, NULL, $client_flags)) {
+        echo "SUCCESS! Connected with SSL (Aiven ca.pem).\n";
+        $mysqli->close();
+    } else {
+        echo "FAILED: " . mysqli_connect_error() . " (Code: " . mysqli_connect_errno() . ")\n";
+    }
+}
 ?>
