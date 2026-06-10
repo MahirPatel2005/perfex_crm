@@ -17,7 +17,14 @@ defined('BASEPATH') or exit('No direct script access allowed');
 * environments.
 *
 */
-define('APP_BASE_URL', getenv('APP_BASE_URL') ?: 'http://localhost:8000/');
+$base_url = null;
+if (isset($_SERVER['HTTP_HOST'])) {
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443 || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) ? "https://" : "http://";
+    $base_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
+} else {
+    $base_url = getenv('APP_BASE_URL') ?: 'http://localhost:8000/';
+}
+define('APP_BASE_URL', $base_url);
 
 /*
 * --------------------------------------------------------------------------
