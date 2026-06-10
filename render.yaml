@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: perfex-crm
+    env: php
+    plan: free
+    buildCommand: "" # No build step needed as assets are precompiled
+    startCommand: "" # Uses default apache/nginx configuration
+    envVars:
+      - key: PHP_VERSION
+        value: 8.2
+      - key: APP_BASE_URL
+        sync: false # User will set their Render URL
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: APP_ENC_KEY
+        value: 0300ec8af32f46e4fcd0329e4f022a27

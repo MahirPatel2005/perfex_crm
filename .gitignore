@@ -1,0 +1,8 @@
+/temp/*
+!/temp/index.html
+/uploads/*
+!/uploads/index.html
+/media/*
+!/media/index.html
+.DS_Store
+/node_modules/
