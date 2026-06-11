@@ -241,6 +241,24 @@ if (!$CI->db->field_exists('hs_code' ,db_prefix() . 'items')) {
  ;");
 }
 
+if (!$CI->db->field_exists('parent_id' ,db_prefix() . 'items')) { 
+  $CI->db->query('ALTER TABLE `' . db_prefix() . "items`
+  ADD COLUMN `parent_id` INT(11) NULL DEFAULT 0
+ ;");
+}
+
+if (!$CI->db->field_exists('attributes' ,db_prefix() . 'items')) { 
+  $CI->db->query('ALTER TABLE `' . db_prefix() . "items`
+  ADD COLUMN `attributes` LONGTEXT NULL
+ ;");
+}
+
+if (!$CI->db->field_exists('parent_attributes' ,db_prefix() . 'items')) { 
+  $CI->db->query('ALTER TABLE `' . db_prefix() . "items`
+  ADD COLUMN `parent_attributes` LONGTEXT NULL
+ ;");
+}
+
 
 //TODO
 //Handle add some table or column use with Inventory module

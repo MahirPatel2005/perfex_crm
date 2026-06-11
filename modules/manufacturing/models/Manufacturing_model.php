@@ -100,7 +100,7 @@ class Manufacturing_model extends App_Model
 	 * @param  [type] $id 
 	 * @return [type]     
 	 */
-	public function get_working_hour($id = fasle)
+	public function get_working_hour($id = false)
 	{
 		if (is_numeric($id)) {
 			$this->db->where('id', $id);

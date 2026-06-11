@@ -12,6 +12,18 @@ class Manufacturing extends AdminController
 	public function __construct()
 	{
 	  parent::__construct();
+
+	  // Ensure missing columns exist in tblitems table
+	  if (!$this->db->field_exists('parent_id', db_prefix() . 'items')) {
+		  $this->db->query('ALTER TABLE `' . db_prefix() . 'items` ADD COLUMN `parent_id` INT(11) NULL DEFAULT 0;');
+	  }
+	  if (!$this->db->field_exists('attributes', db_prefix() . 'items')) {
+		  $this->db->query('ALTER TABLE `' . db_prefix() . 'items` ADD COLUMN `attributes` LONGTEXT NULL;');
+	  }
+	  if (!$this->db->field_exists('parent_attributes', db_prefix() . 'items')) {
+		  $this->db->query('ALTER TABLE `' . db_prefix() . 'items` ADD COLUMN `parent_attributes` LONGTEXT NULL;');
+	  }
+
 	  $this->load->model('manufacturing_model');
 	  hooks()->do_action('manufacturing_init');
 
