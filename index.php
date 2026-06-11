@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_STRICT);
 
 if( ! ini_get('date.timezone') )
 {
@@ -74,14 +74,14 @@ if( ! ini_get('date.timezone') )
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
+		error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_STRICT);
 		ini_set('display_errors', 1);
 	break;
 
 	case 'testing':
 	case 'production':
 		ini_set('display_errors', 1);
-		error_reporting(E_ALL);
+		error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE & ~E_STRICT);
 	break;
 
 	default:
