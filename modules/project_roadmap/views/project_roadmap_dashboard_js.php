@@ -1,10 +1,12 @@
 <script>
   $(function(){
-     var circle = $('.project-progress').circleProgress({fill: {
-      gradient: ['#84c529', '#84c529']
-    }}).on('circle-animation-progress', function(event, progress, stepValue) {
-      $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
-    });
+     if (typeof($.fn.circleProgress) !== 'undefined') {
+         var circle = $('.project-progress').circleProgress({fill: {
+          gradient: ['#84c529', '#84c529']
+        }}).on('circle-animation-progress', function(event, progress, stepValue) {
+          $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
+        });
+     }
     var arrayValues = $('.list_project_id').map(function(){
                       return $(this).val()
                   }).get();
@@ -68,14 +70,16 @@
     $.each(rows, function() {
         var td = $(this).find('td').eq(1);
         var percent = $(td).find('input[name="percent"]').val();
-        $(td).find('.goal-progress').circleProgress({
-            value: percent,
-            size: 45,
-            animation: false,
-            fill: {
-                gradient: ["#28b8da", "#059DC1"]
-            }
-        })
+        if (typeof($.fn.circleProgress) !== 'undefined') {
+            $(td).find('.goal-progress').circleProgress({
+                value: percent,
+                size: 45,
+                animation: false,
+                fill: {
+                    gradient: ["#28b8da", "#059DC1"]
+                }
+            })
+        }
     })
 
 </script>

@@ -27,15 +27,19 @@ hooks()->add_filter('get_dashboard_widgets', 'project_roadmap_add_dashboard_widg
 register_activation_hook(PROJECT_ROADMAP_MODULE_NAME, 'project_roadmap_module_activation_hook');
 
 
-function project_roadmap_load_js($dashboard_js) {
+function project_roadmap_load_js($dashboard_js = '') {
         $CI = &get_instance();
-        $dashboard_js .=  $CI->load->view('project_roadmap/project_roadmap_dashboard_js');
+        if ($CI->router->fetch_class() == 'dashboard') {
+            $CI->load->view('project_roadmap/project_roadmap_dashboard_js');
+        }
         return $dashboard_js;
 }
 
 function project_roadmap_load_progress_js($data) {
         $CI = &get_instance();
-        $CI->app_scripts->add('circle-progress-js','assets/plugins/jquery-circle-progress/circle-progress.min.js');
+        if ($CI->router->fetch_class() == 'dashboard') {
+            $CI->app_scripts->add('circle-progress-js','assets/plugins/jquery-circle-progress/circle-progress.min.js');
+        }
         return $data;
 }
 
@@ -55,11 +59,14 @@ function project_roadmap_add_dashboard_widget($widgets) {
 
 function project_roadmap_header_static_css_js(){
     $CI = &get_instance();
+	echo '<link href="' . base_url('modules/project_roadmap/assets/css/main.css') .'"  rel="stylesheet" type="text/css" />';
+}
+
+function project_roadmap_footer_static_js(){
+    $CI = &get_instance();
 	$viewuri = $_SERVER['REQUEST_URI'];
 	
-	echo '<link href="' . base_url('modules/project_roadmap/assets/css/main.css') .'"  rel="stylesheet" type="text/css" />';
-	
-	if ($viewuri == '/admin/' || $viewuri == '/admin') {
+	if ($CI->router->fetch_class() == 'dashboard') {
 		echo '<script src="' . base_url('modules/project_roadmap/assets/js/plugins/highcharts/highcharts.js') .'"></script>';
 		echo '<script src="' . base_url('modules/project_roadmap/assets/js/plugins/highcharts/variable-pie.js') .'"></script>';
 		echo '<script src="' . base_url('modules/project_roadmap/assets/js/plugins/highcharts/export-data.js') .'"></script>';
@@ -77,16 +84,9 @@ function project_roadmap_header_static_css_js(){
 		echo '<script src="' . base_url('modules/project_roadmap/assets/js/plugins/highcharts/highcharts-3d.js') .'"></script>';
 	}
 	
-}
-
-function project_roadmap_footer_static_js(){
-    $CI = &get_instance();
-	$viewuri = $_SERVER['REQUEST_URI'];
-	
 	if (strpos($viewuri, '/admin/project_roadmap') !== false) {
 		echo '<script src="' . base_url('modules/project_roadmap/assets/js/project_roadmap.js') .'"></script>';
 	}
-	
 }
 
 

@@ -7,11 +7,13 @@ var fnServerParams = {
  }
   $(function(){
      var project_progress_color = '<?php echo do_action('admin_project_progress_color','#84c529'); ?>';
-     var circle = $('.project-progress').circleProgress({fill: {
-      gradient: [project_progress_color, project_progress_color]
-    }}).on('circle-animation-progress', function(event, progress, stepValue) {
-      $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
-    });
+      if (typeof($.fn.circleProgress) !== 'undefined') {
+          var circle = $('.project-progress').circleProgress({fill: {
+           gradient: [project_progress_color, project_progress_color]
+         }}).on('circle-animation-progress', function(event, progress, stepValue) {
+           $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
+         });
+      }
     project_roadmap_tasks();
   });
   $('select[name="milestones"],select[name="members"],select[name="task_status"]').on('change', function() {
@@ -58,14 +60,16 @@ var fnServerParams = {
     $.each(rows, function() {
         var td = $(this).find('td').eq(1);
         var percent = $(td).find('input[name="percent"]').val();
-        $(td).find('.goal-progress').circleProgress({
-            value: percent,
-            size: 45,
-            animation: false,
-            fill: {
-                gradient: ["#28b8da", "#059DC1"]
-            }
-        })
+        if (typeof($.fn.circleProgress) !== 'undefined') {
+            $(td).find('.goal-progress').circleProgress({
+                value: percent,
+                size: 45,
+                animation: false,
+                fill: {
+                    gradient: ["#28b8da", "#059DC1"]
+                }
+            })
+        }
 		})
 
     

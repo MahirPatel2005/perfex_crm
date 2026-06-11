@@ -512,11 +512,13 @@ function new_discussion() {
    }
    $(function(){
     var project_progress_color = '<?php echo hooks()->apply_filters('admin_project_progress_color','#84c529'); ?>';
-    var circle = $('.project-progress').circleProgress({fill: {
-     gradient: [project_progress_color, project_progress_color]
-   }}).on('circle-animation-progress', function(event, progress, stepValue) {
-     $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
-   });
+    if (typeof($.fn.circleProgress) !== 'undefined') {
+        var circle = $('.project-progress').circleProgress({fill: {
+         gradient: [project_progress_color, project_progress_color]
+       }}).on('circle-animation-progress', function(event, progress, stepValue) {
+         $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
+       });
+    }
    });
 
    function discussion_comments(selector,mindmap_id,discussion_type){

@@ -38,14 +38,16 @@ $(function() {
         $.each(rows, function() {
             var td = $(this).find('td').eq(6);
             var percent = $(td).find('input[name="percent"]').val();
-            $(td).find('.goal-progress').circleProgress({
-                value: percent,
-                size: 45,
-                animation: false,
-                fill: {
-                    gradient: ["#28b8da", "#059DC1"]
-                }
-            })
+            if (typeof($.fn.circleProgress) !== 'undefined') {
+                $(td).find('.goal-progress').circleProgress({
+                    value: percent,
+                    size: 45,
+                    animation: false,
+                    fill: {
+                        gradient: ["#28b8da", "#059DC1"]
+                    }
+                })
+            }
         })
     })
 });

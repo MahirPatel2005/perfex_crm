@@ -158,15 +158,17 @@ $(function() {
         }
     });
     <?php if (isset($goal)) { ?>
-    var circle = $('.goal-progress').circleProgress({
-        value: '<?php echo e($achievement['progress_bar_percent']); ?>',
-        size: 250,
-        fill: {
-            gradient: ["#28b8da", "#059DC1"]
-        }
-    }).on('circle-animation-progress', function(event, progress, stepValue) {
-        $(this).find('strong.goal-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
-    });
+    if (typeof($.fn.circleProgress) !== 'undefined') {
+        var circle = $('.goal-progress').circleProgress({
+            value: '<?php echo e($achievement['progress_bar_percent']); ?>',
+            size: 250,
+            fill: {
+                gradient: ["#28b8da", "#059DC1"]
+            }
+        }).on('circle-animation-progress', function(event, progress, stepValue) {
+            $(this).find('strong.goal-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
+        });
+    }
     <?php } ?>
     var goal_type = $('select[name="goal_type"]').val();
     if (goal_type == 5 || goal_type == 7) {
