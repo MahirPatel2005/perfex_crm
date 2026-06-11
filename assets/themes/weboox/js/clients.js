@@ -167,13 +167,15 @@ $(function() {
         $('.task-phase:eq(' + (i + 10) + ')').not('.color-not-auto-adjusted').css('background', color(r - (i * 13), g - (i * 13), b - (i * 13))).css('border', '1px solid ' + color(r - (i * 13), g - (i * 13), b - (i * 13)));
     };
 
-    var circle = $('.project-progress').circleProgress({
-        fill: {
-            gradient: ["#84c529", "#84c529"]
-        }
-    }).on('circle-animation-progress', function(event, progress, stepValue) {
-        $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
-    });
+    if (typeof($.fn.circleProgress) !== 'undefined') {
+        var circle = $('.project-progress').circleProgress({
+            fill: {
+                gradient: ["#84c529", "#84c529"]
+            }
+        }).on('circle-animation-progress', function(event, progress, stepValue) {
+            $(this).find('strong.project-percent').html(parseInt(100 * stepValue) + '<i>%</i>');
+        });
+    }
 
     $('.toggle-change-ticket-status').on('click', function() {
         $('.ticket-status,.ticket-status-inline').toggleClass('hide');

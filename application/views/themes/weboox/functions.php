@@ -125,17 +125,18 @@ function theme_assets()
     $CI->app_scripts->theme('my-scripts-bundle-js', 'assets/themes/weboox/js/scripts.bundle.js');
 
     $CI->app_scripts->theme('global-js', 'assets/themes/weboox/js/global.js');
-    $CI->app_scripts->theme('dashboard-js', 'assets/themes/weboox/js/dashboard.js');
-    // $CI->app_scripts->theme('fullcalendar-js', 'assets/themes/weboox/js/fullcalendar.bundle.js');
-    $CI->app_scripts->theme('fullcalendar-basic', 'assets/themes/weboox/js/basic.js');
-    $CI->app_scripts->theme('fullcalendar-background', 'assets/themes/weboox/js/background-events.js');
-    $CI->app_scripts->theme('fullcalendar-external', 'assets/themes/weboox/js/external-events.js');
-    $CI->app_scripts->theme('fullcalendar-listview', 'assets/themes/weboox/js/list-view.js');
     $CI->app_scripts->theme('perfect-scrollbar', 'assets/themes/weboox/js/perfect-scrollbar.js');
-    $CI->app_scripts->theme('clients-js', 'assets/themes/weboox/js/clients.js');
-    $CI->app_scripts->theme('datatables-js', 'assets/themes/weboox/js/datatables.bundle.js');
     $CI->app_scripts->theme('mask-js', 'assets/themes/weboox/js/jquery.mask.min.js');
     $CI->app_scripts->theme('metronic-js', 'assets/themes/weboox/js/weboox.js');
+
+    if (is_client_logged_in()) {
+        $CI->app_scripts->theme('dashboard-js', 'assets/themes/weboox/js/dashboard.js');
+        $CI->app_scripts->theme('fullcalendar-basic', 'assets/themes/weboox/js/basic.js');
+        $CI->app_scripts->theme('fullcalendar-background', 'assets/themes/weboox/js/background-events.js');
+        $CI->app_scripts->theme('fullcalendar-external', 'assets/themes/weboox/js/external-events.js');
+        $CI->app_scripts->theme('fullcalendar-listview', 'assets/themes/weboox/js/list-view.js');
+        $CI->app_scripts->theme('datatables-js', 'assets/themes/weboox/js/datatables.bundle.js');
+    }
 
 
 
