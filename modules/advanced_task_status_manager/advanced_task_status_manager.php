@@ -12,6 +12,11 @@ Requires at least: 2.3.*
 
 define('ADVANCED_TASK_STATUS_MANAGER_MODULE_NAME', 'advanced_task_status_manager');
 
+class AdvancedTaskStatusStore {
+    public static $current_task_status = null;
+    public static $current_project_status = null;
+    public static $is_task_status_manager_loading = false;
+}
 
 /**
  * Register activation module hook
@@ -44,11 +49,11 @@ hooks()->add_filter('admin_area_auto_loaded_vars', 'filter_statuses_for_staff_in
 function advanced_task_status_manager_module_activation_hook()
 {
     $CI = &get_instance();
-    $CI->is_task_status_manager_loading = true;
+    AdvancedTaskStatusStore::$is_task_status_manager_loading = true;
 
     require_once(__DIR__ . '/install.php');
 
-    $CI->is_task_status_manager_loading = false;
+    AdvancedTaskStatusStore::$is_task_status_manager_loading = false;
 }
 
 
@@ -115,11 +120,11 @@ register_language_files(ADVANCED_TASK_STATUS_MANAGER_MODULE_NAME, [ADVANCED_TASK
 function load_statuses_from_db($statuses)
 {
     $CI = &get_instance();
-    if ($CI->is_task_status_manager_loading ?? false) {
+    if (AdvancedTaskStatusStore::$is_task_status_manager_loading) {
         return $statuses;
     }
 
-    if ($CI->uri->uri_string == 'admin/tasks' || ($CI->uri->segments[2] == 'projects' && $CI->uri->segments[3] == 'view' && $CI->input->get('group') == 'project_tasks')) {
+    if ($CI->uri->uri_string == 'admin/tasks' || (isset($CI->uri->segments[2]) && $CI->uri->segments[2] == 'projects' && isset($CI->uri->segments[3]) && $CI->uri->segments[3] == 'view' && $CI->input->get('group') == 'project_tasks')) {
         $statusesUserCantSee = $CI->db->where('staff_id', get_staff_user_id())->get(db_prefix() . 'task_status_dont_have_staff')->result_array();
         $statusesIdsUserCantSee = array_map(fn ($x) => $x['task_status_id'], $statusesUserCantSee);
 
@@ -138,14 +143,15 @@ function load_statuses_from_db($statuses)
  */
 function load_project_statuses_from_db($statuses)
 {
+    static $project_status_once = false;
     $CI = &get_instance();
-    if ($CI->is_task_status_manager_loading ?? false) {
+    if (AdvancedTaskStatusStore::$is_task_status_manager_loading) {
         return $statuses;
     }
 
-    if (!$CI->project_status_once && isset($CI->uri->segments[3], $CI->uri->segments[4]) && ($CI->uri->segments[3] == 'project' || $CI->uri->segments[3] == 'view') && is_numeric($CI->uri->segments[4])) {
-        $CI->project_status_once = true;
-        $statusesAvalibleToChange = $CI->db->where('project_status_id', $CI->current_project_status)->get(db_prefix() . 'project_status_can_change')->result_array();
+    if (!$project_status_once && isset($CI->uri->segments[3], $CI->uri->segments[4]) && ($CI->uri->segments[3] == 'project' || $CI->uri->segments[3] == 'view') && is_numeric($CI->uri->segments[4])) {
+        $project_status_once = true;
+        $statusesAvalibleToChange = $CI->db->where('project_status_id', AdvancedTaskStatusStore::$current_project_status)->get(db_prefix() . 'project_status_can_change')->result_array();
         $statusesIdsAvalibleToChange = array_map(fn ($x) => $x['project_status_id_can_change_to'], $statusesAvalibleToChange);
         if (!empty($statusesIdsAvalibleToChange)) { // && !is_admin()
             $CI->db->where_in('id', $statusesIdsAvalibleToChange);
@@ -220,7 +226,7 @@ function filter_statuses_avalible_for_change_in_task_view()
 {
 
     $CI = &get_instance();
-    $statusesAvalibleToChange = $CI->db->where('task_status_id', $CI->current_task_status)->get(db_prefix() . 'task_status_can_change')->result_array();
+    $statusesAvalibleToChange = $CI->db->where('task_status_id', AdvancedTaskStatusStore::$current_task_status)->get(db_prefix() . 'task_status_can_change')->result_array();
     $statusesIdsAvalibleToChange = array_map(fn ($x) => $x['task_status_id_can_change_to'], $statusesAvalibleToChange);
     if (!empty($statusesIdsAvalibleToChange) && !is_admin()) {
         $CI->db->where_in('id', $statusesIdsAvalibleToChange);
@@ -287,8 +293,7 @@ function filter_statuses_avalible_for_change_in_table($taskRow, $task)
  */
 function save_status_of_current_task($task)
 {
-    $CI = &get_instance();
-    $CI->current_task_status = $task->status;
+    AdvancedTaskStatusStore::$current_task_status = $task->status;
 }
 /**
  * We need to save the status of an open project
@@ -296,7 +301,6 @@ function save_status_of_current_task($task)
  */
 function save_status_of_current_project($project)
 {
-    $CI = &get_instance();
-    $CI->current_project_status = $project->status;
+    AdvancedTaskStatusStore::$current_project_status = $project->status;
     return $project;
 }
