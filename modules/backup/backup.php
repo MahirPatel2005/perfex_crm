@@ -28,7 +28,7 @@ hooks()->add_filter('used_cron_features', 'backup_used_cron_features');
 
 function backup_numbers_of_features_using_cron_job($number)
 {
-    $feature = get_option('auto_backup_enabled');
+    $feature = (int) get_option('auto_backup_enabled');
     $number += $feature;
 
     return $number;
@@ -36,7 +36,7 @@ function backup_numbers_of_features_using_cron_job($number)
 
 function backup_used_cron_features($features)
 {
-    $feature = get_option('auto_backup_enabled');
+    $feature = (int) get_option('auto_backup_enabled');
     if ($feature > 0) {
         array_push($features, 'Auto database backup');
     }
