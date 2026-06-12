@@ -36,6 +36,12 @@ function _app_init()
             }
             $ci->db->where('module_name', $m_name);
             $db_mod = $ci->db->get(db_prefix() . 'modules')->row();
+
+            $should_install = false;
+            if (!$db_mod || !$db_mod->active) {
+                $should_install = true;
+            }
+
             if ($db_mod) {
                 $ci->db->where('module_name', $m_name);
                 $ci->db->update(db_prefix() . 'modules', ['installed_version' => $m_version, 'active' => 1]);
@@ -43,6 +49,13 @@ function _app_init()
                 $ci->db->insert(db_prefix() . 'modules', ['module_name' => $m_name, 'installed_version' => $m_version, 'active' => 1]);
             }
             update_option($m_name . '_module_activated', 1);
+
+            if ($should_install) {
+                if (file_exists($mod['init_file'])) {
+                    include_once($mod['init_file']);
+                }
+                hooks()->do_action("activate_{$m_name}_module");
+            }
         }
         update_option('all_modules_force_activated', '1');
     }
