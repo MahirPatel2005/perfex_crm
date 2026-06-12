@@ -26,6 +26,27 @@ function _app_init()
 
     _app_init_load();
 
+    if (get_option('all_modules_force_activated') !== '1') {
+        $modules_to_activate = $ci->app_modules->get();
+        foreach ($modules_to_activate as $mod) {
+            $m_name = $mod['system_name'];
+            $m_version = $mod['headers']['version'];
+            if ($m_name === 'warehouse') {
+                $m_version = '1.3.0';
+            }
+            $ci->db->where('module_name', $m_name);
+            $db_mod = $ci->db->get(db_prefix() . 'modules')->row();
+            if ($db_mod) {
+                $ci->db->where('module_name', $m_name);
+                $ci->db->update(db_prefix() . 'modules', ['installed_version' => $m_version, 'active' => 1]);
+            } else {
+                $ci->db->insert(db_prefix() . 'modules', ['module_name' => $m_name, 'installed_version' => $m_version, 'active' => 1]);
+            }
+            update_option($m_name . '_module_activated', 1);
+        }
+        update_option('all_modules_force_activated', '1');
+    }
+
     /**
      * In case of failures, users can skip the modules to be loaded
      */

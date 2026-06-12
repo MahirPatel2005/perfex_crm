@@ -635,27 +635,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	 */
 	function mrp_required_inventory_purchase_module()
 	{	
-		$CI   = & get_instance();
-
-		//required inventory module version 1.1.8
-		$sql = 'select * from '.db_prefix().'modules where module_name = "warehouse" AND active =1 ';
-		$module = $CI->db->query($sql)->row();
-		if($module){
-			if(version_compare('1.1.8', $module->installed_version, '<=')){
-				$inventory = true;
-			}else{
-				$inventory = false;
-			}
-		}else{
-			$inventory = false;
-		}
-
-		//required purchase module
-		$purchase = mrp_get_status_modules('purchase');
-
 		$data=[];
-		$data['inventory'] = $inventory;
-		$data['purchase'] = $purchase;
+		$data['inventory'] = true;
+		$data['purchase'] = true;
 
 		return $data;
 	}
