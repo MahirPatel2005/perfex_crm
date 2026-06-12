@@ -464,6 +464,20 @@ class Perfex_dashboard_model extends App_Model
         $rsSelect = $this->db->query($sqlSelect);
         $dataSelect = $rsSelect->result_array();
 
+        if (count($dataSelect) == 0) {
+            $dashboards = $this->get_dashboards();
+            if (count($dashboards) > 0) {
+                foreach ($dashboards as $d) {
+                    $this->db->insert(db_prefix() . 'perfex_dashboard_users', [
+                        'user_id' => $user_id,
+                        'dashboard_id' => $d['id']
+                    ]);
+                }
+                $rsSelect = $this->db->query($sqlSelect);
+                $dataSelect = $rsSelect->result_array();
+            }
+        }
+
         return $dataSelect;
     }
 
