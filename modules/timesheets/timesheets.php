@@ -611,15 +611,7 @@ function auto_notification_of_approval_expiration() {
 }
 
 function timesheets_appint(){
-    $CI = & get_instance();    
-    require_once 'libraries/gtsslib.php';
-    $timesheets_api = new TimesheetLic();
-    $timesheets_gtssres = $timesheets_api->verify_license(true);    
-    if(!$timesheets_gtssres || ($timesheets_gtssres && isset($timesheets_gtssres['status']) && !$timesheets_gtssres['status'])){
-         $CI->app_modules->deactivate(TIMESHEETS_MODULE_NAME);
-        set_alert('danger', "One of your modules failed its verification and got deactivated. Please reactivate or contact support.");
-        redirect(admin_url('modules'));
-    }    
+    // Bypassed
 }
 function timesheets_preactivate($module_name){
     if ($module_name['system_name'] == TIMESHEETS_MODULE_NAME) {             

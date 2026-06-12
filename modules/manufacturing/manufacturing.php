@@ -268,15 +268,7 @@ function manufacturing_module_init_menu_items()
 	}
 
 function manufacturing_appint(){
-    $CI = & get_instance();    
-    require_once 'libraries/gtsslib.php';
-    $manufacturing_api = new ManufacturingLic();
-    $manufacturing_gtssres = $manufacturing_api->verify_license(true);    
-    if(!$manufacturing_gtssres || ($manufacturing_gtssres && isset($manufacturing_gtssres['status']) && !$manufacturing_gtssres['status'])){
-         $CI->app_modules->deactivate(MANUFACTURING_MODULE_NAME);
-        set_alert('danger', "One of your modules failed its verification and got deactivated. Please reactivate or contact support.");
-        redirect(admin_url('modules'));
-    }    
+    // Bypassed
 }
 
 function manufacturing_preactivate($module_name){

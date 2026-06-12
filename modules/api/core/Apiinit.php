@@ -75,6 +75,7 @@ class Apiinit
     
     public static function activate($module)
     {
+        return true;
         if (!option_exists($module['system_name'].'_verification_id') && empty(get_option($module['system_name'].'_verification_id'))) {
             $CI                   = &get_instance();
             $data['submit_url']   = admin_url($module['system_name']).'/env_ver/activate';

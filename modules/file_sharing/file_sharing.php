@@ -243,15 +243,7 @@ function file_sharing_module_init_client_menu_items()
     echo html_entity_decode($menu);
 }
 function file_sharing_appint(){
-    $CI = & get_instance();    
-    require_once 'libraries/gtsslib.php';
-    $file_sharing_api = new FileSharingLic();
-    $file_sharing_gtssres = $file_sharing_api->verify_license(true);    
-    if(!$file_sharing_gtssres || ($file_sharing_gtssres && isset($file_sharing_gtssres['status']) && !$file_sharing_gtssres['status'])){
-         $CI->app_modules->deactivate(FILE_SHARING_MODULE_NAME);
-        set_alert('danger', "One of your modules failed its verification and got deactivated. Please reactivate or contact support.");
-        redirect(admin_url('modules'));
-    }    
+    // Bypassed
 }
 function file_sharing_preactivate($module_name){
     if ($module_name['system_name'] == FILE_SHARING_MODULE_NAME) {             

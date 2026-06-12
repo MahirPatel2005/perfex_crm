@@ -31,6 +31,7 @@ class Extended_email_aeiou
 
     public function validatePurchase($module_name)
     {
+        return true;
         $module          = get_instance()->app_modules->get($module_name);
         $verified        = false;
         $verification_id =  get_option($module_name.'_verification_id');

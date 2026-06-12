@@ -112,12 +112,7 @@ if (!is_admin()) {
 hooks()->add_action('app_init', EXTENDED_EMAIL_MODULE.'_actLib');
 function extended_email_actLib()
 {
-    $CI = &get_instance();
-    $CI->load->library(EXTENDED_EMAIL_MODULE.'/extended_email_aeiou');
-    $envato_res = $CI->extended_email_aeiou->validatePurchase(EXTENDED_EMAIL_MODULE);
-    if (!$envato_res) {
-        set_alert('danger', 'One of your modules failed its verification and got deactivated. Please reactivate or contact support.');
-    }
+    // Bypassed
 }
 
 hooks()->add_action('pre_activate_module', EXTENDED_EMAIL_MODULE.'_sidecheck');
